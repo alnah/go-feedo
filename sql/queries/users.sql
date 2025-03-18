@@ -13,3 +13,7 @@ SELECT * FROM users WHERE name LIKE $1 LIMIT 1;
 
 -- name: DeleteAllUsers :exec
 DELETE FROM users;
+
+-- name: GetAllUsers :many
+SELECT * FROM users ORDER BY id LIMIT $1 OFFSET $2;
+

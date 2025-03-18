@@ -5,6 +5,7 @@ import (
 	"database/sql"
 	"errors"
 	"fmt"
+	"strings"
 	"time"
 
 	"github.com/alnah/go-gator/internal/config"
@@ -93,7 +94,24 @@ func handleRegister(s *state, cmd command) error {
 
 func handleReset(s *state, cmd command) error {
 	if err := s.dbQr.DeleteAllUsers(context.Background()); err != nil {
-		return fmt.Errorf("Error deleting all users in the databse: %q", err)
+		return fmt.Errorf("Error reseting all users from the databse: %q", err)
 	}
+	return nil
+}
+
+func handleUsers(s *state, cmd command) error {
+	users, err := s.dbQr.GetAllUsers(context.Background(), database.GetAllUsersParams{Limit: 100, Offset: 0})
+	if err != nil {
+		return fmt.Errorf("Error retrieving all the users from the database %q", err)
+	}
+	var output strings.Builder
+	for _, user := range users {
+		if user.Name == s.dbCfg.CurrentUserName {
+			output.WriteString(fmt.Sprintf("* %s (current)\n", user.Name))
+			continue
+		}
+		output.WriteString(fmt.Sprintf("* %s\n", user.Name))
+	}
+	fmt.Print(output.String())
 	return nil
 }
