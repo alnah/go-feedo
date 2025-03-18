@@ -90,3 +90,10 @@ func handleRegister(s *state, cmd command) error {
 	fmt.Printf("The user has been set to %q\n", username)
 	return nil
 }
+
+func handleReset(s *state, cmd command) error {
+	if err := s.dbQr.DeleteAllUsers(context.Background()); err != nil {
+		return fmt.Errorf("Error deleting all users in the databse: %q", err)
+	}
+	return nil
+}

@@ -28,7 +28,8 @@ func initCli() {
 	cmds := commands{}
 	cmds.register("login", handleLogin)
 	cmds.register("register", handleRegister)
-	if len(os.Args) <= 2 {
+	cmds.register("reset", handleReset)
+	if len(os.Args) < 2 {
 		log.Fatal("Usage: cli <command> [args...]")
 	}
 	cmdName, cmdArgs := os.Args[1], os.Args[2:]
