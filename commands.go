@@ -57,23 +57,25 @@ func (c *commands) run(s *state, cmd command) error {
 // handleLogin sets the current user name of the database configuration to the given username
 func handleLogin(s *state, cmd command) error {
 	if len(cmd.args) != 1 {
-		return errors.New("Please provide one username, e.g.\"login alice\"")
+		return errors.New("Please provide a single username, e.g., \"login alice\"")
 	}
 	username := cmd.args[0]
 	_, err := s.dbQr.GetUser(context.Background(), username)
 	if err != nil {
-		return errors.New("An unexpected error occured")
+		return fmt.Errorf("Error getting user from the database %w:", err)
 	}
 	if err := s.dbCfg.SetUser(username); err != nil {
 		return err
 	}
-	fmt.Printf("The user has been set to %q\n", username)
+	fmt.Printf("The user has been set to: %q", username)
 	return nil
 }
 
+// handleRegister creates a new username and insert it into the users table
+// it also sets the new registered user as the current user name of the database configuration
 func handleRegister(s *state, cmd command) error {
 	if len(cmd.args) != 1 {
-		return errors.New("Please provide one username, e.g.\"register alice\"")
+		return errors.New("Please provide a single username, e.g.,\"register alice\"")
 	}
 	username := cmd.args[0]
 	_, err := s.dbQr.CreateUser(context.Background(), database.CreateUserParams{
@@ -83,22 +85,25 @@ func handleRegister(s *state, cmd command) error {
 		Name:      username,
 	})
 	if err != nil {
-		return fmt.Errorf("Error registering user in the database: %q", err)
+		return fmt.Errorf("Error inserting user into the database: %q", err)
 	}
 	if err = s.dbCfg.SetUser(username); err != nil {
 		return err
 	}
-	fmt.Printf("The user has been set to %q\n", username)
+	fmt.Printf("The user has been set to: %q", username)
 	return nil
 }
 
+// handleReset delete all the users from the users table
+// it's really to work on CRUD operations, of course never do that into a real app...
 func handleReset(s *state, cmd command) error {
 	if err := s.dbQr.DeleteAllUsers(context.Background()); err != nil {
-		return fmt.Errorf("Error reseting all users from the databse: %q", err)
+		return fmt.Errorf("Error deleting all users from the databse: %q", err)
 	}
 	return nil
 }
 
+// handleUsers retrieve all the first 100 users from users table
 func handleUsers(s *state, cmd command) error {
 	users, err := s.dbQr.GetAllUsers(context.Background(), database.GetAllUsersParams{Limit: 100, Offset: 0})
 	if err != nil {
@@ -113,5 +118,44 @@ func handleUsers(s *state, cmd command) error {
 		output.WriteString(fmt.Sprintf("* %s\n", user.Name))
 	}
 	fmt.Print(output.String())
+	return nil
+}
+
+// handleAgg aggregates feeds from one RSS feed URL
+func handleAgg(_ *state, _ command) error {
+	// if len(cmd.args) != 1 {
+	// 	return errors.New("Please provide one RSS feed URL, e.g.\"register https://www.myfeed.com/index.xml\"")
+	// }
+	feedURL := "https://www.wagslane.dev/index.xml" // cmd.args[0]
+	rssFeed, err := fetchFeed(context.Background(), feedURL)
+	if err != nil {
+		return fmt.Errorf("Error aggregating feeds: %w", err)
+	}
+	fmt.Printf("%+v", rssFeed)
+	return nil
+}
+
+// handleAddFeed adds a feed to the feeds table
+func handleAddFeed(s *state, cmd command) error {
+	if len(cmd.args) != 2 {
+		return errors.New("Please provide a feed name, and its url, e.g., \"addfeed 'Hacker News RSS' 'https://hnrss.org/newest'\"")
+	}
+	ctx, feedName, feedUrl := context.Background(), cmd.args[0], cmd.args[1]
+	user, err := s.dbQr.GetUser(ctx, s.dbCfg.CurrentUserName)
+	if err != nil {
+		return fmt.Errorf("Error getting user from the database: %q", err)
+	}
+	feed, err := s.dbQr.CreateFeed(ctx, database.CreateFeedParams{
+		ID:        uuid.New(),
+		CreatedAt: sql.NullTime{Time: time.Now(), Valid: true},
+		UpdatedAt: sql.NullTime{Time: time.Now(), Valid: true},
+		Name:      feedName,
+		Url:       feedUrl,
+		UserID:    user.ID,
+	})
+	if err != nil {
+		return fmt.Errorf("Error inserting feed into the database: %q", err)
+	}
+	fmt.Printf("%+v", feed)
 	return nil
 }
