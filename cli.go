@@ -32,10 +32,10 @@ func initCli() {
 		"reset":     handlerReset,
 		"users":     handlerListUsers,
 		"agg":       handlerAgg,
-		"addfeed":   handlerAddFeed,
+		"addfeed":   middlewareLoggedIn(handlerAddFeed),
 		"feeds":     handlerListFeeds,
-		"follow":    handlerFollow,
-		"following": handlerListFeedFollows,
+		"follow":    middlewareLoggedIn(handlerFollow),
+		"following": middlewareLoggedIn(handlerListFeedFollows),
 	}
 	for cmd, handler := range handlers {
 		cmds.register(cmd, handler)

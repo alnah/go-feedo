@@ -9,12 +9,8 @@ import (
 	"github.com/google/uuid"
 )
 
-// handlerAddFeed adds a feed to the feeds table
-func handlerAddFeed(s *state, cmd command) error {
-	user, err := s.dbQr.GetUser(context.Background(), s.dbCfg.CurrentUserName)
-	if err != nil {
-		return err
-	}
+// handlerAddFeed adds a feed to the feeds table, and follows it for the current user who added the feed
+func handlerAddFeed(s *state, cmd command, user database.User) error {
 	if len(cmd.args) != 2 {
 		return fmt.Errorf("usage: %s <name> <url>", cmd.name)
 	}

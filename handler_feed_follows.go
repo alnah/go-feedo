@@ -10,11 +10,7 @@ import (
 )
 
 // handlerFollow creates a new feed follow record for the current user in the feed_follows table
-func handlerFollow(s *state, cmd command) error {
-	user, err := s.dbQr.GetUser(context.Background(), s.dbCfg.CurrentUserName)
-	if err != nil {
-		return err
-	}
+func handlerFollow(s *state, cmd command, user database.User) error {
 	if len(cmd.args) != 1 {
 		return fmt.Errorf("usage: %s <feed_url>", cmd.name)
 	}
@@ -38,11 +34,7 @@ func handlerFollow(s *state, cmd command) error {
 }
 
 // handlerListFeedFollows retrieves all the names of the feeds the current user is following
-func handlerListFeedFollows(s *state, cmd command) error {
-	user, err := s.dbQr.GetUser(context.Background(), s.dbCfg.CurrentUserName)
-	if err != nil {
-		return err
-	}
+func handlerListFeedFollows(s *state, cmd command, user database.User) error {
 	feedFollows, err := s.dbQr.GetFeedFollowsForUser(context.Background(), user.ID)
 	if err != nil {
 		return fmt.Errorf("couldn't get feed follows: %w", err)
