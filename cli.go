@@ -33,6 +33,7 @@ func initCli() {
 		"users":    handleUsers,
 		"agg":      handleAgg,
 		"addfeed":  handleAddFeed,
+		"feeds":    handleListFeeds,
 	}
 	for cmd, handler := range handlers {
 		cmds.register(cmd, handler)
