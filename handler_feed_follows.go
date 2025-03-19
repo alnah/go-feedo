@@ -54,3 +54,16 @@ func printFeedFollow(username, feedname string) {
 	fmt.Printf("* User:          %s\n", username)
 	fmt.Printf("* Feed:          %s\n", feedname)
 }
+
+// handlerUnfollow allows to unfollow a feed for the current user
+func handlerUnfollow(s *state, cmd command, user database.User) error {
+	if len(cmd.args) != 1 {
+		return fmt.Errorf("usage: %s <url>", cmd.name)
+	}
+	url := cmd.args[0]
+	err := s.dbQr.DeleteFeedFollow(context.Background(), database.DeleteFeedFollowParams{UserID: user.ID, Url: url})
+	if err != nil {
+		return fmt.Errorf("couldn't delete feed follow: %w", err)
+	}
+	return nil
+}

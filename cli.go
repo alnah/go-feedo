@@ -36,6 +36,7 @@ func initCli() {
 		"feeds":     handlerListFeeds,
 		"follow":    middlewareLoggedIn(handlerFollow),
 		"following": middlewareLoggedIn(handlerListFeedFollows),
+		"unfollow":  middlewareLoggedIn(handlerUnfollow),
 	}
 	for cmd, handler := range handlers {
 		cmds.register(cmd, handler)
