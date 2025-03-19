@@ -88,12 +88,12 @@ func (q *Queries) GetAllUsers(ctx context.Context, arg GetAllUsersParams) ([]Use
 	return items, nil
 }
 
-const getUser = `-- name: GetUser :one
-SELECT id, created_at, updated_at, name FROM users WHERE name LIKE $1 LIMIT 1
+const getUserByID = `-- name: GetUserByID :one
+SELECT id, created_at, updated_at, name FROM users WHERE id = $1
 `
 
-func (q *Queries) GetUser(ctx context.Context, name string) (User, error) {
-	row := q.db.QueryRowContext(ctx, getUser, name)
+func (q *Queries) GetUserByID(ctx context.Context, id uuid.UUID) (User, error) {
+	row := q.db.QueryRowContext(ctx, getUserByID, id)
 	var i User
 	err := row.Scan(
 		&i.ID,
@@ -104,12 +104,12 @@ func (q *Queries) GetUser(ctx context.Context, name string) (User, error) {
 	return i, err
 }
 
-const getUserByID = `-- name: GetUserByID :one
-SELECT id, created_at, updated_at, name FROM users WHERE id = $1
+const getUserByName = `-- name: GetUserByName :one
+SELECT id, created_at, updated_at, name FROM users WHERE name LIKE $1 LIMIT 1
 `
 
-func (q *Queries) GetUserByID(ctx context.Context, id uuid.UUID) (User, error) {
-	row := q.db.QueryRowContext(ctx, getUserByID, id)
+func (q *Queries) GetUserByName(ctx context.Context, name string) (User, error) {
+	row := q.db.QueryRowContext(ctx, getUserByName, name)
 	var i User
 	err := row.Scan(
 		&i.ID,

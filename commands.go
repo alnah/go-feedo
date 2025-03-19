@@ -60,7 +60,7 @@ func handleLogin(s *state, cmd command) error {
 		return errors.New("Please provide a single username, e.g., \"login alice\"")
 	}
 	username := cmd.args[0]
-	_, err := s.dbQr.GetUser(context.Background(), username)
+	_, err := s.dbQr.GetUserByName(context.Background(), username)
 	if err != nil {
 		return fmt.Errorf("Error getting user from the database %w:", err)
 	}
@@ -71,9 +71,9 @@ func handleLogin(s *state, cmd command) error {
 	return nil
 }
 
-// handleRegister creates a new username and insert it into the users table
+// handleAddUser creates a new username and insert it into the users table
 // it also sets the new registered user as the current user name of the database configuration
-func handleRegister(s *state, cmd command) error {
+func handleAddUser(s *state, cmd command) error {
 	if len(cmd.args) != 1 {
 		return errors.New("Please provide a single username, e.g.,\"register alice\"")
 	}
@@ -94,17 +94,17 @@ func handleRegister(s *state, cmd command) error {
 	return nil
 }
 
-// handleReset delete all the users from the users table
+// handleResetAllUsers delete all the users from the users table
 // it's really to work on CRUD operations, of course never do that into a real app...
-func handleReset(s *state, cmd command) error {
+func handleResetAllUsers(s *state, cmd command) error {
 	if err := s.dbQr.DeleteAllUsers(context.Background()); err != nil {
 		return fmt.Errorf("Error deleting all users from the databse: %q", err)
 	}
 	return nil
 }
 
-// handleUsers retrieve all the first 100 users from users table
-func handleUsers(s *state, _ command) error {
+// handleListAllUsers retrieve all the first 100 users from users table
+func handleListAllUsers(s *state, _ command) error {
 	users, err := s.dbQr.GetAllUsers(context.Background(), database.GetAllUsersParams{Limit: 100, Offset: 0})
 	if err != nil {
 		return fmt.Errorf("Error retrieving all the users from the database %q", err)
@@ -121,8 +121,8 @@ func handleUsers(s *state, _ command) error {
 	return nil
 }
 
-// handleAgg aggregates feeds from one RSS feed URL
-func handleAgg(_ *state, _ command) error {
+// handleAggregate aggregates feeds from one RSS feed URL
+func handleAggregate(_ *state, _ command) error {
 	// if len(cmd.args) != 1 {
 	// 	return errors.New("Please provide one RSS feed URL, e.g.\"register https://www.myfeed.com/index.xml\"")
 	// }
@@ -141,7 +141,7 @@ func handleAddFeed(s *state, cmd command) error {
 		return errors.New("Please provide a feed name, and its url, e.g., \"addfeed 'Hacker News RSS' 'https://hnrss.org/newest'\"")
 	}
 	ctx, feedName, feedUrl := context.Background(), cmd.args[0], cmd.args[1]
-	user, err := s.dbQr.GetUser(ctx, s.dbCfg.CurrentUserName)
+	user, err := s.dbQr.GetUserByName(ctx, s.dbCfg.CurrentUserName)
 	if err != nil {
 		return fmt.Errorf("Error getting user from the database: %q", err)
 	}
@@ -160,8 +160,8 @@ func handleAddFeed(s *state, cmd command) error {
 	return nil
 }
 
-// handleListFeeds gets all the feeds from the feed table
-func handleListFeeds(s *state, _ command) error {
+// handleListAllFeeds gets all the feeds from the feed table
+func handleListAllFeeds(s *state, _ command) error {
 	ctx := context.Background()
 	feeds, err := s.dbQr.GetAllFeeds(ctx, database.GetAllFeedsParams{Limit: 100, Offset: 0})
 	if err != nil {

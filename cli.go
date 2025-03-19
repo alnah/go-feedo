@@ -28,12 +28,12 @@ func initCli() {
 	cmds := commands{}
 	handlers := map[string]commandHandler{
 		"login":    handleLogin,
-		"register": handleRegister,
-		"reset":    handleReset,
-		"users":    handleUsers,
-		"agg":      handleAgg,
+		"register": handleAddUser,
+		"reset":    handleResetAllUsers,
+		"users":    handleListAllUsers,
+		"agg":      handleAggregate,
 		"addfeed":  handleAddFeed,
-		"feeds":    handleListFeeds,
+		"feeds":    handleListAllFeeds,
 	}
 	for cmd, handler := range handlers {
 		cmds.register(cmd, handler)
