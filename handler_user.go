@@ -9,7 +9,7 @@ import (
 	"github.com/google/uuid"
 )
 
-// handleRegister creates a new username and insert it into the users table
+// handlerRegister creates a new username and insert it into the users table
 // it also sets the new registered user as the current user name of the database configuration
 func handlerRegister(s *state, cmd command) error {
 	if len(cmd.args) != 1 {
@@ -34,7 +34,7 @@ func handlerRegister(s *state, cmd command) error {
 	return nil
 }
 
-// handleLogin sets the current user name of the database configuration to the given username
+// handlerLogin sets the current user name of the database configuration to the given username
 func handlerLogin(s *state, cmd command) error {
 	if len(cmd.args) != 1 {
 		return fmt.Errorf("usage: %s <name>", cmd.name)
