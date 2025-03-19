@@ -104,7 +104,7 @@ func handleReset(s *state, cmd command) error {
 }
 
 // handleUsers retrieve all the first 100 users from users table
-func handleUsers(s *state, cmd command) error {
+func handleUsers(s *state, _ command) error {
 	users, err := s.dbQr.GetAllUsers(context.Background(), database.GetAllUsersParams{Limit: 100, Offset: 0})
 	if err != nil {
 		return fmt.Errorf("Error retrieving all the users from the database %q", err)
@@ -157,5 +157,22 @@ func handleAddFeed(s *state, cmd command) error {
 		return fmt.Errorf("Error inserting feed into the database: %q", err)
 	}
 	fmt.Printf("%+v", feed)
+	return nil
+}
+
+// handleListFeeds gets all the feeds from the feed table
+func handleListFeeds(s *state, _ command) error {
+	ctx := context.Background()
+	feeds, err := s.dbQr.GetAllFeeds(ctx, database.GetAllFeedsParams{Limit: 100, Offset: 0})
+	if err != nil {
+		return fmt.Errorf("Error getting all feeds from the database: %q", err)
+	}
+	for _, feed := range feeds {
+		usern, err := s.dbQr.GetUserByID(ctx, feed.UserID)
+		if err != nil {
+			return fmt.Errorf("Error getting user by ID from the database: %w", err)
+		}
+		fmt.Printf("* %s: %s (owner: %s)\n", feed.Name, feed.Url, usern.Name)
+	}
 	return nil
 }
