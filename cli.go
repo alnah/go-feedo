@@ -27,13 +27,15 @@ func initCli() {
 	s := &state{dbCfg: &dbCfg, dbQr: dbQr}
 	cmds := commands{}
 	handlers := map[string]commandHandler{
-		"login":    handleLogin,
-		"register": handleAddUser,
-		"reset":    handleResetAllUsers,
-		"users":    handleListAllUsers,
-		"agg":      handleAggregate,
-		"addfeed":  handleAddFeed,
-		"feeds":    handleListAllFeeds,
+		"login":     handlerLogin,
+		"register":  handlerRegister,
+		"reset":     handlerReset,
+		"users":     handlerListUsers,
+		"agg":       handlerAgg,
+		"addfeed":   handlerAddFeed,
+		"feeds":     handlerListFeeds,
+		"follow":    handlerFollow,
+		"following": handlerListFeedFollows,
 	}
 	for cmd, handler := range handlers {
 		cmds.register(cmd, handler)
