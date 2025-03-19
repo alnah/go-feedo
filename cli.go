@@ -26,10 +26,17 @@ func initCli() {
 	}
 	s := &state{dbCfg: &dbCfg, dbQr: dbQr}
 	cmds := commands{}
-	cmds.register("login", handleLogin)
-	cmds.register("register", handleRegister)
-	cmds.register("reset", handleReset)
-	cmds.register("users", handleUsers)
+	handlers := map[string]commandHandler{
+		"login":    handleLogin,
+		"register": handleRegister,
+		"reset":    handleReset,
+		"users":    handleUsers,
+		"agg":      handleAgg,
+		"addfeed":  handleAddFeed,
+	}
+	for cmd, handler := range handlers {
+		cmds.register(cmd, handler)
+	}
 	if len(os.Args) < 2 {
 		log.Fatal("Usage: cli <command> [args...]")
 	}
