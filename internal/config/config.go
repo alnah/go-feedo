@@ -6,7 +6,7 @@ import (
 	"path/filepath"
 )
 
-// configFileName represents the JSON configuration file name
+// configFilePath represents the JSON configuration file path
 const configFilePath = ".config/go-feedo/config.json"
 
 // DatabaseConfig holds configuration values for the database
