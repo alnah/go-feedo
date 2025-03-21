@@ -6,7 +6,9 @@ Interactions with the PostgreSQL database are implemented without an ORM like GO
 
 # Requirements
 
-Before anything, you need to have [Go](https://go.dev/doc/install) and [PostgreSQL](https://www.postgresql.org/docs/current/installation.html) installed on your system.
+Before anything, you need to have [Go](https://go.dev/doc/install),
+[PostgreSQL](https://www.postgresql.org/docs/current/installation.html),
+and [Goose](https://github.com/pressly/goose?tab=readme-ov-file#install) installed on your system.
 
 Configure the database. In the `~/.config/go-feedo/config.json` file, add the following line:
 
@@ -14,6 +16,14 @@ Configure the database. In the `~/.config/go-feedo/config.json` file, add the fo
 {
   "db_url": "postgres://<db_user>:<db_password>@localhost:5432/<db_name>?sslmode=disable"
 }
+```
+
+Migrate up:
+
+```bash
+git clone https://github.com/alnah/go-feedo
+cd go-feedo
+goose postgres -dir="sql/schema" "postgres://<db_user>:<db_password>@localhost:5432/<db_name> up"
 ```
 
 # Installation
@@ -24,10 +34,10 @@ The straightforward option is to install the CLI globally using Go tooling:
 go install github.com/alnah/go-feedo@latest
 ```
 
-Or, clone the repo from GitHub and compile it using the Makefile:
+Or, after cloning the repo from GitHub, compile it using the Makefile from your repo directory:
 
 ```bash
-git clone https://github.com/alnah/go-feedo && cd go-feedo && make
+make
 ```
 
 Otherwise, download the appropriate [artificat](https://github.com/alnah/go-feedo/releases)
