@@ -4,7 +4,7 @@ import (
 	"context"
 	"fmt"
 
-	"github.com/alnah/go-gator/internal/database"
+	"github.com/alnah/go-feedo/internal/database"
 )
 
 // middlewareLoggedIn allows to change the function signature of our handlers that

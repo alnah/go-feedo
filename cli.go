@@ -5,8 +5,8 @@ import (
 	"log"
 	"os"
 
-	"github.com/alnah/go-gator/internal/config"
-	"github.com/alnah/go-gator/internal/database"
+	"github.com/alnah/go-feedo/internal/config"
+	"github.com/alnah/go-feedo/internal/database"
 )
 
 // initClit initialize the command-line client and should be used from main entry point
@@ -44,7 +44,7 @@ func initCli() {
 		cmds.register(cmd, handler)
 	}
 	if len(os.Args) < 2 {
-		log.Fatal("Try: gator help")
+		log.Fatal("Try: go-feedo help")
 	}
 	cmdName, cmdArgs := os.Args[1], os.Args[2:]
 	cmd := command{name: cmdName, args: cmdArgs}

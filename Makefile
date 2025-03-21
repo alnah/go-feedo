@@ -1,7 +1,7 @@
 BIN=bin/
 DIST=dist/
 SRC=$(shell find . -name "*.go")
-TARGET=$(BIN)/go-gator
+TARGET=$(BIN)/go-feedo
 
 ifeq (, $(shell which golangci-lint))
 	$(warning "could not find golangci-lint in $(PATH), \

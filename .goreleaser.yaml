@@ -1,4 +1,4 @@
-project_name: go-gator
+project_name: go-feedo
 version: 2
 
 before:
@@ -6,7 +6,7 @@ before:
     - go mod tidy
 
 builds:
-  - id: go-gator
+  - id: go-feedo
     env:
       - CGO_ENABLED=0
     goos:
@@ -43,7 +43,7 @@ changelog:
 release:
   github:
     owner: alnah
-    name: go-gator
+    name: go-feedo
 
 snapshot:
   version_template: "{{ incpatch .Version }}-devel"

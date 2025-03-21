@@ -8,7 +8,7 @@ import (
 	"strings"
 	"time"
 
-	"github.com/alnah/go-gator/internal/database"
+	"github.com/alnah/go-feedo/internal/database"
 	"github.com/google/uuid"
 )
 

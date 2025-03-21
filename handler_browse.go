@@ -5,7 +5,7 @@ import (
 	"fmt"
 	"strconv"
 
-	"github.com/alnah/go-gator/internal/database"
+	"github.com/alnah/go-feedo/internal/database"
 )
 
 // handlerBrowse browses the posts for the current user using its followed feeds

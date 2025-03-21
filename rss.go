@@ -43,7 +43,7 @@ func fetchFeed(ctx context.Context, feedURL string) (*RSSFeed, error) {
 	if err != nil {
 		return nil, fmt.Errorf("Error creating a new request: %q", err)
 	}
-	req.Header.Set("User-Agent", "gator")
+	req.Header.Set("User-Agent", "go-feedo")
 	req.Header.Set("Content-Type", "application/rss+xml")
 	client := &http.Client{Timeout: 10 * time.Second}
 	res, err := client.Do(req)

@@ -7,7 +7,7 @@ import (
 )
 
 // configFileName represents the JSON configuration file name
-const configFilePath = ".config/gator/config.json"
+const configFilePath = ".config/go-feedo/config.json"
 
 // DatabaseConfig holds configuration values for the database
 type DatabaseConfig struct {

@@ -1,8 +1,8 @@
 package main
 
 import (
-	"github.com/alnah/go-gator/internal/config"
-	"github.com/alnah/go-gator/internal/database"
+	"github.com/alnah/go-feedo/internal/config"
+	"github.com/alnah/go-feedo/internal/database"
 )
 
 // state gives to the handlers an access to the application state and the database queries

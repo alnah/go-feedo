@@ -1,4 +1,4 @@
-module github.com/alnah/go-gator
+module github.com/alnah/go-feedo
 
 go 1.23.6
 
