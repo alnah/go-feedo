@@ -12,7 +12,7 @@ import (
 // handlerAddFeed adds a feed to the feeds table, and follows it for the current user who added the feed
 func handlerAddFeed(s *state, cmd command, user database.User) error {
 	if len(cmd.args) != 2 {
-		return fmt.Errorf("usage: %s <name> <url>", cmd.name)
+		return fmt.Errorf("usage: %v <name> <url>", cmd.name)
 	}
 	name := cmd.args[0]
 	url := cmd.args[1]
@@ -75,4 +75,5 @@ func printFeed(feed database.Feed, user database.User) {
 	fmt.Printf("* Name:          %s\n", feed.Name)
 	fmt.Printf("* URL:           %s\n", feed.Url)
 	fmt.Printf("* User:          %s\n", user.Name)
+	fmt.Printf("* LastFetchedAt: %v\n", feed.LastFetchedAt.Time)
 }

@@ -27,22 +27,24 @@ func initCli() {
 	s := &state{dbCfg: &dbCfg, dbQr: dbQr}
 	cmds := commands{}
 	handlers := map[string]commandHandler{
-		"login":     handlerLogin,
-		"register":  handlerRegister,
-		"reset":     handlerReset,
-		"users":     handlerListUsers,
-		"agg":       handlerAgg,
-		"addfeed":   middlewareLoggedIn(handlerAddFeed),
-		"feeds":     handlerListFeeds,
-		"follow":    middlewareLoggedIn(handlerFollow),
-		"following": middlewareLoggedIn(handlerListFeedFollows),
-		"unfollow":  middlewareLoggedIn(handlerUnfollow),
+		"login":      handlerLogin,
+		"register":   handlerRegister,
+		"reset":      handlerReset,
+		"list-users": handlerListUsers,
+		"agg":        handlerAgg,
+		"addfeed":    middlewareLoggedIn(handlerAddFeed),
+		"feeds":      handlerListFeeds,
+		"follow":     middlewareLoggedIn(handlerFollow),
+		"following":  middlewareLoggedIn(handlerListFeedFollows),
+		"unfollow":   middlewareLoggedIn(handlerUnfollow),
+		"browse":     middlewareLoggedIn(handlerBrowse),
+		"help":       handlerHelp,
 	}
 	for cmd, handler := range handlers {
 		cmds.register(cmd, handler)
 	}
 	if len(os.Args) < 2 {
-		log.Fatal("Usage: cli <command> [args...]")
+		log.Fatal("Try: gator help")
 	}
 	cmdName, cmdArgs := os.Args[1], os.Args[2:]
 	cmd := command{name: cmdName, args: cmdArgs}

@@ -3,6 +3,7 @@ package main
 import (
 	"context"
 	"fmt"
+	"log"
 )
 
 // handlerReset delete all the users from the users table
@@ -12,6 +13,6 @@ func handlerReset(s *state, cmd command) error {
 	if err != nil {
 		return fmt.Errorf("couldn't delete users: %w", err)
 	}
-	fmt.Println("Database reset successfully!")
+	log.Println("Database reset successfully!")
 	return nil
 }

@@ -37,7 +37,7 @@ func handlerRegister(s *state, cmd command) error {
 // handlerLogin sets the current user name of the database configuration to the given username
 func handlerLogin(s *state, cmd command) error {
 	if len(cmd.args) != 1 {
-		return fmt.Errorf("usage: %s <name>", cmd.name)
+		return fmt.Errorf("usage: %v <name>", cmd.name)
 	}
 	name := cmd.args[0]
 	_, err := s.dbQr.GetUser(context.Background(), name)

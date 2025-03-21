@@ -12,7 +12,7 @@ import (
 // handlerFollow creates a new feed follow record for the current user in the feed_follows table
 func handlerFollow(s *state, cmd command, user database.User) error {
 	if len(cmd.args) != 1 {
-		return fmt.Errorf("usage: %s <feed_url>", cmd.name)
+		return fmt.Errorf("usage: %v <feed_url>", cmd.name)
 	}
 	feed, err := s.dbQr.GetFeedByURL(context.Background(), cmd.args[0])
 	if err != nil {
