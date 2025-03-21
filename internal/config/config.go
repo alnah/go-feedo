@@ -7,7 +7,7 @@ import (
 )
 
 // configFileName represents the JSON configuration file name
-const configFileName = ".gatorconfig.json"
+const configFilePath = ".config/gator/config.json"
 
 // DatabaseConfig holds configuration values for the database
 type DatabaseConfig struct {
@@ -65,5 +65,9 @@ func getConfigFilePath() (string, error) {
 	if err != nil {
 		return "", err
 	}
-	return filepath.Join(home, configFileName), nil
+	fullPath := filepath.Join(home, configFilePath)
+	if err := os.MkdirAll(filepath.Dir(fullPath), 0755); err != nil { // Ensure the dir exists
+		return "", err
+	}
+	return fullPath, nil
 }
